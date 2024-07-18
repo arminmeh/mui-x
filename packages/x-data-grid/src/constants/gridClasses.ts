@@ -588,6 +588,12 @@ export interface GridClasses {
    * Styles applied to the toolbar filter list element.
    */
   toolbarFilterList: string;
+  toolbarRemoteControl: string;
+  'toolbarRemoteControl--recording': string;
+  toolbarRemoteControlRecordingIndicator: string;
+  toolbarRemoteControlRecordButton: string;
+  toolbarRemoteControlSendButton: string;
+
   /**
    * Styles applied the grid if `showColumnVerticalBorder={true}`.
    */
@@ -793,6 +799,11 @@ export const gridClasses = generateUtilityClasses<GridClassKey>('MuiDataGrid', [
   'sortIcon',
   'toolbarContainer',
   'toolbarFilterList',
+  'toolbarRemoteControl',
+  'toolbarRemoteControl--recording',
+  'toolbarRemoteControlRecordingIndicator',
+  'toolbarRemoteControlRecordButton',
+  'toolbarRemoteControlSendButton',
   'virtualScroller',
   'virtualScroller--hasScrollX',
   'virtualScrollerContent',
