@@ -323,6 +323,27 @@ export const useGridDataSource = (
     [apiRef],
   );
 
+  const putRow = React.useCallback<GridEventListener<'rowEditStop'>>(
+    async (params) => {
+      const updateRow = props.unstable_dataSource?.updateRow;
+      if (!updateRow) {
+        return;
+      }
+
+      const rowModel = params.row;
+      apiRef.current.setLoading(true);
+      try {
+        const updateRowResponse = await updateRow(rowModel);
+        apiRef.current.updateRows([updateRowResponse]);
+      } catch (error) {
+        onError?.(error as Error, rowModel);
+      } finally {
+        apiRef.current.setLoading(false);
+      }
+    },
+    [props.unstable_dataSource?.updateRow],
+  );
+
   const handleStrategyActivityChange = React.useCallback<
     GridEventListener<'strategyAvailabilityChange'>
   >(() => {
@@ -397,6 +418,7 @@ export const useGridDataSource = (
     'paginationModelChange',
     runIf(defaultRowsUpdateStrategyActive, () => fetchRows()),
   );
+  useGridApiEventHandler(apiRef, 'rowEditStop', runIf(!!props.unstable_dataSource, putRow));
 
   const isFirstRender = React.useRef(true);
   React.useEffect(() => {
