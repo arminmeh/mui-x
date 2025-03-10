@@ -144,6 +144,10 @@ DataGridProRaw.propTypes = {
    */
   clipboardCopyCellDelimiter: PropTypes.string,
   /**
+   * The columns to display collapsed.
+   */
+  collapsedColumns: PropTypes.object,
+  /**
    * Column region in pixels to render before/after the viewport
    * @default 150
    */
@@ -215,6 +219,11 @@ DataGridProRaw.propTypes = {
    * @default false
    */
   disableChildrenSorting: PropTypes.bool,
+  /**
+   * If `true`, the column collapsing is disabled.
+   * @default false
+   */
+  disableColumnCollapse: PropTypes.bool,
   /**
    * If `true`, column filters are disabled.
    * @default false
@@ -567,6 +576,12 @@ DataGridProRaw.propTypes = {
    * @param {string} data The data copied to the clipboard.
    */
   onClipboardCopy: PropTypes.func,
+  /**
+   * Callback fired when the collapsed columns have changed.
+   * @param {GridColumnCollapseModel} collapsedColumns The changed collapsed columns.
+   * @param {GridCallbackDetails} details Additional details for this callback.
+   */
+  onCollapsedColumnsChange: PropTypes.func,
   /**
    * Callback fired when a click event comes from a column header element.
    * @param {GridColumnHeaderParams} params With all properties from [[GridColumnHeaderParams]].

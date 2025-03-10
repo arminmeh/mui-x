@@ -68,6 +68,10 @@ import {
   useGridColumnPinning,
   columnPinningStateInitializer,
 } from '../hooks/features/columnPinning/useGridColumnPinning';
+import {
+  columnCollapseStateInitializer,
+  useGridColumnCollapse,
+} from '../hooks/features/columnCollapse/useGridColumnCollapse';
 import { useGridColumnPinningPreProcessors } from '../hooks/features/columnPinning/useGridColumnPinningPreProcessors';
 import {
   useGridDetailPanel,
@@ -118,6 +122,7 @@ export const useDataGridProComponent = (
   useGridInitializeState(rowSelectionStateInitializer, apiRef, props);
   useGridInitializeState(detailPanelStateInitializer, apiRef, props);
   useGridInitializeState(columnPinningStateInitializer, apiRef, props);
+  useGridInitializeState(columnCollapseStateInitializer, apiRef, props);
   useGridInitializeState(columnsStateInitializer, apiRef, props);
   useGridInitializeState(rowPinningStateInitializer, apiRef, props);
   useGridInitializeState(rowsStateInitializer, apiRef, props);
@@ -144,6 +149,7 @@ export const useDataGridProComponent = (
   useGridKeyboardNavigation(apiRef, props);
   useGridRowSelection(apiRef, props);
   useGridColumnPinning(apiRef, props);
+  useGridColumnCollapse(apiRef, props);
   useGridRowPinning(apiRef, props);
   useGridColumns(apiRef, props);
   useGridRows(apiRef, props);

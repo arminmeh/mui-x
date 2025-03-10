@@ -122,6 +122,10 @@ export interface GridClasses {
    */
   checkboxInput: string;
   /**
+   * Styles applied to the collapse icon element.
+   */
+  collapseIcon: string;
+  /**
    * Styles applied to the column header element.
    */
   columnHeader: string;
@@ -734,6 +738,7 @@ export const gridClasses = generateUtilityClasses<GridClassKey>('MuiDataGrid', [
   'cellSkeleton',
   'cellOffsetLeft',
   'checkboxInput',
+  'collapseIcon',
   'columnHeader',
   'columnHeader--alignCenter',
   'columnHeader--alignLeft',

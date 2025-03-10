@@ -84,6 +84,7 @@ export const GridRootStyles = styled('div', {
     { [`& .${c.cellOffsetLeft}`]: styles.cellOffsetLeft },
     { [`& .${c.cellSkeleton}`]: styles.cellSkeleton },
     { [`& .${c.checkboxInput}`]: styles.checkboxInput },
+    { [`& .${c.collapseIcon}`]: styles.collapseIcon },
     { [`& .${c.columnHeader}`]: styles.columnHeader },
     { [`& .${c['columnHeader--alignCenter']}`]: styles['columnHeader--alignCenter'] },
     { [`& .${c['columnHeader--alignLeft']}`]: styles['columnHeader--alignLeft'] },
@@ -433,9 +434,10 @@ export const GridRootStyles = styled('div', {
     },
     '@media (hover: hover)': {
       [`& .${c.columnHeader}:hover`]: columnHeaderStyles,
-      [`& .${c.columnHeader}:not(.${c['columnHeader--sorted']}):hover .${c.sortIcon}`]: {
-        opacity: 0.5,
-      },
+      [`& .${c.columnHeader}:not(.${c['columnHeader--sorted']}):hover .${c.sortIcon}, & .${c.columnHeader}:hover .${c.collapseIcon}`]:
+        {
+          opacity: 0.5,
+        },
     },
     '@media (hover: none)': {
       [`& .${c.columnHeader}`]: columnHeaderStyles,

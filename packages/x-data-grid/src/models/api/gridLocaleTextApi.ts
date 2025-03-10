@@ -141,11 +141,14 @@ export interface GridLocaleText {
   columnMenuUnsort: React.ReactNode;
   columnMenuSortAsc: React.ReactNode | ((colDef: GridColDef) => React.ReactNode);
   columnMenuSortDesc: React.ReactNode | ((colDef: GridColDef) => React.ReactNode);
+  columnMenuCollapse: React.ReactNode;
+  columnMenuExpand: React.ReactNode;
 
   // Column header text
   columnHeaderFiltersTooltipActive: (count: number) => React.ReactNode;
   columnHeaderFiltersLabel: string;
   columnHeaderSortIconLabel: string;
+  columnHeaderCollapseIconLabel: string;
 
   // Rows selected footer text
   footerRowSelected: (count: number) => React.ReactNode;

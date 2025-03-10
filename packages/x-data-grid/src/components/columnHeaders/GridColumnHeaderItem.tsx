@@ -28,7 +28,6 @@ interface GridColumnHeaderItemProps {
   isResizing: boolean;
   isLast: boolean;
   sortDirection: GridSortDirection;
-  sortIndex?: number;
   filterItemsCounter?: number;
   hasFocus?: boolean;
   tabIndex: 0 | -1;
@@ -41,6 +40,7 @@ interface GridColumnHeaderItemProps {
   isSiblingFocused: boolean;
   showLeftBorder: boolean;
   showRightBorder: boolean;
+  columnTitleIconButtons?: React.ReactNode;
 }
 
 type OwnerState = GridColumnHeaderItemProps & {
@@ -106,8 +106,6 @@ function GridColumnHeaderItem(props: GridColumnHeaderItemProps) {
     isResizing,
     isLast,
     sortDirection,
-    sortIndex,
-    filterItemsCounter,
     hasFocus,
     tabIndex,
     disableReorder,
@@ -116,6 +114,7 @@ function GridColumnHeaderItem(props: GridColumnHeaderItemProps) {
     showRightBorder,
     pinnedPosition,
     pinnedOffset,
+    columnTitleIconButtons,
   } = props;
   const apiRef = useGridPrivateApiContext();
   const rootProps = useGridRootProps();
@@ -231,35 +230,6 @@ function GridColumnHeaderItem(props: GridColumnHeaderItemProps) {
     />
   );
 
-  const sortingOrder: readonly GridSortDirection[] = colDef.sortingOrder ?? rootProps.sortingOrder;
-  const showSortIcon =
-    (colDef.sortable || sortDirection != null) &&
-    !colDef.hideSortIcons &&
-    !rootProps.disableColumnSorting;
-
-  const columnTitleIconButtons = (
-    <React.Fragment>
-      {!rootProps.disableColumnFilter && (
-        <rootProps.slots.columnHeaderFilterIconButton
-          field={colDef.field}
-          counter={filterItemsCounter}
-          {...rootProps.slotProps?.columnHeaderFilterIconButton}
-        />
-      )}
-
-      {showSortIcon && (
-        <rootProps.slots.columnHeaderSortIcon
-          field={colDef.field}
-          direction={sortDirection}
-          index={sortIndex}
-          sortingOrder={sortingOrder}
-          disabled={!colDef.sortable}
-          {...rootProps.slotProps?.columnHeaderSortIcon}
-        />
-      )}
-    </React.Fragment>
-  );
-
   React.useLayoutEffect(() => {
     const columnMenuState = apiRef.current.state.columnMenu;
     if (hasFocus && !columnMenuState.open) {
@@ -324,6 +294,7 @@ GridColumnHeaderItem.propTypes = {
   colDef: PropTypes.object.isRequired,
   colIndex: PropTypes.number.isRequired,
   columnMenuOpen: PropTypes.bool.isRequired,
+  columnTitleIconButtons: PropTypes.node,
   disableReorder: PropTypes.bool,
   filterItemsCounter: PropTypes.number,
   hasFocus: PropTypes.bool,
@@ -339,7 +310,6 @@ GridColumnHeaderItem.propTypes = {
   showLeftBorder: PropTypes.bool.isRequired,
   showRightBorder: PropTypes.bool.isRequired,
   sortDirection: PropTypes.oneOf(['asc', 'desc']),
-  sortIndex: PropTypes.number,
   style: PropTypes.object,
   tabIndex: PropTypes.oneOf([-1, 0]).isRequired,
 } as any;

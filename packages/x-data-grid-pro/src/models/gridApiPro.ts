@@ -8,6 +8,7 @@ import { GridPrivateOnlyApiCommon, GridInfiniteLoaderPrivateApi } from '@mui/x-d
 import { GridInitialStatePro, GridStatePro } from './gridStatePro';
 import type {
   GridColumnPinningApi,
+  GridColumnCollapseApi,
   GridDetailPanelApi,
   GridRowPinningApi,
   GridDetailPanelPrivateApi,
@@ -25,6 +26,7 @@ export interface GridApiPro
   extends GridApiCommon<GridStatePro, GridInitialStatePro>,
     GridRowProApi,
     GridColumnPinningApi,
+    GridColumnCollapseApi,
     GridDetailPanelApi,
     GridRowPinningApi,
     GridDataSourceApiPro,

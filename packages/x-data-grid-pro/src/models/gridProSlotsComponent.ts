@@ -16,4 +16,9 @@ export interface GridProSlotsComponent extends GridSlotsComponent, GridProIconSl
    * @default GridHeaderFilterMenu
    */
   headerFilterMenu: React.JSXElementConstructor<any> | null;
+  /**
+   * Component responsible for showing collapse icon in column header
+   * @default GridColumnHeaderCollapseIcon
+   */
+  columnHeaderCollapseIcon: React.JSXElementConstructor<any>;
 }

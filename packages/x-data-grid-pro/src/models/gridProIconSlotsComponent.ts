@@ -11,4 +11,14 @@ export interface GridProIconSlotsComponent {
    * @default GridPushPinRightIcon
    */
   columnMenuPinRightIcon: React.JSXElementConstructor<any>;
+  /**
+   * Icon displayed in column menu for collapsing the column
+   * @default GridCollapseIcon
+   */
+  columnMenuCollapseIcon: React.JSXElementConstructor<any>;
+  /**
+   * Icon displayed in column menu for expanding the column
+   * @default GridExpandIcon
+   */
+  columnMenuExpandIcon: React.JSXElementConstructor<any>;
 }

@@ -6,6 +6,7 @@ export const GRID_REORDER_COL_DEF: GridColDef = {
   type: 'custom',
   field: '__reorder__',
   sortable: false,
+  collapsible: false,
   filterable: false,
   width: 50,
   align: 'center',

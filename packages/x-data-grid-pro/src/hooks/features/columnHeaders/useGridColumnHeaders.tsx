@@ -44,11 +44,29 @@ const filterItemsCache: Record<GridStateColDef['field'], GridFilterItem> = Objec
 
 export const useGridColumnHeaders = (props: UseGridColumnHeadersProps) => {
   const apiRef = useGridPrivateApiContext();
+  const rootProps = useGridRootProps();
   const { headerGroupingMaxDepth, hasOtherElementInTabSequence } = props;
   const columnHeaderFilterTabIndexState = useGridSelector(
     apiRef,
     gridTabIndexColumnHeaderFilterSelector,
   );
+
+  const renderAdditionalColumnTitleIconButtons = (colDef: GridStateColDef) => {
+    const showCollapseIcon =
+      !!colDef.collapsible && !colDef.hideCollapseIcon && !rootProps.disableColumnCollapse;
+
+    return (
+      <React.Fragment>
+        {showCollapseIcon && (
+          <rootProps.slots.columnHeaderCollapseIcon
+            field={colDef.field}
+            {...rootProps.slotProps?.columnHeaderCollapseIcon}
+          />
+        )}
+      </React.Fragment>
+    );
+  };
+
   const {
     getColumnsToRender,
     getPinnedCellOffset,
@@ -63,13 +81,13 @@ export const useGridColumnHeaders = (props: UseGridColumnHeadersProps) => {
     ...props,
     hasOtherElementInTabSequence:
       hasOtherElementInTabSequence || columnHeaderFilterTabIndexState !== null,
+    renderAdditionalColumnTitleIconButtons,
   });
   const headerFiltersRef = React.useRef<HTMLDivElement>(null);
   apiRef.current.register('private', {
     headerFiltersElementRef: headerFiltersRef,
   });
   const headerFilterMenuRef = React.useRef<HTMLButtonElement | null>(null);
-  const rootProps = useGridRootProps();
   const classes = useUtilityClasses(rootProps);
   const disableHeaderFiltering = !rootProps.headerFilters;
   const filterModel = useGridSelector(apiRef, gridFilterModelSelector);

@@ -43,6 +43,7 @@ export const DATA_GRID_PRO_PROPS_DEFAULT_VALUES: DataGridProPropsWithDefaultValu
   disableChildrenFiltering: false,
   disableChildrenSorting: false,
   disableColumnPinning: false,
+  disableColumnCollapse: false,
   getDetailPanelHeight: () => 500,
   headerFilters: false,
   keepColumnPositionIfDraggedOutside: false,

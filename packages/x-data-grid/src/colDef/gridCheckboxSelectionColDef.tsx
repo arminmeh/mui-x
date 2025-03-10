@@ -14,6 +14,7 @@ export const GRID_CHECKBOX_SELECTION_COL_DEF: GridColDef = {
   width: 50,
   resizable: false,
   sortable: false,
+  collapsible: false,
   filterable: false,
   // @ts-ignore
   aggregable: false,

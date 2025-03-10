@@ -130,12 +130,15 @@ export const GRID_DEFAULT_LOCALE_TEXT: GridLocaleText = {
   columnMenuUnsort: 'Unsort',
   columnMenuSortAsc: 'Sort by ASC',
   columnMenuSortDesc: 'Sort by DESC',
+  columnMenuCollapse: 'Collapse column',
+  columnMenuExpand: 'Expand column',
 
   // Column header text
   columnHeaderFiltersTooltipActive: (count) =>
     count !== 1 ? `${count} active filters` : `${count} active filter`,
   columnHeaderFiltersLabel: 'Show filters',
   columnHeaderSortIconLabel: 'Sort',
+  columnHeaderCollapseIconLabel: 'Collapse',
 
   // Rows selected footer text
   footerRowSelected: (count) =>

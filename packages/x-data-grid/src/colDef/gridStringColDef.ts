@@ -12,11 +12,13 @@ export const GRID_STRING_COL_DEF: GridColTypeDef<any, any> = {
   maxWidth: Infinity,
   hideable: true,
   sortable: true,
+  collapsible: true,
   resizable: true,
   filterable: true,
   groupable: true,
   pinnable: true,
   // @ts-ignore
+  hideCollapseIcon: true,
   aggregable: true,
   editable: false,
   sortComparator: gridStringOrNumberComparator,

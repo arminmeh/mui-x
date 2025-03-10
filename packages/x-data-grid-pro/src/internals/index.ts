@@ -16,6 +16,10 @@ export {
   useGridColumnPinning,
   columnPinningStateInitializer,
 } from '../hooks/features/columnPinning/useGridColumnPinning';
+export {
+  useGridColumnCollapse,
+  columnCollapseStateInitializer,
+} from '../hooks/features/columnCollapse/useGridColumnCollapse';
 export { useGridColumnPinningPreProcessors } from '../hooks/features/columnPinning/useGridColumnPinningPreProcessors';
 export {
   useGridColumnReorder,

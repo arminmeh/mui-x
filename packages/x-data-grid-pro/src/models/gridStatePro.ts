@@ -8,6 +8,7 @@ import type {
   GridDetailPanelState,
   GridDetailPanelInitialState,
   GridColumnReorderState,
+  GridColumnCollapseState,
 } from '../hooks';
 import type { GridDataSourceState } from '../hooks/features/dataSource/models';
 
@@ -16,6 +17,7 @@ import type { GridDataSourceState } from '../hooks/features/dataSource/models';
  */
 export interface GridStatePro extends GridStateCommunity {
   columnReorder: GridColumnReorderState;
+  collapsedColumns: GridColumnCollapseState;
   pinnedColumns: GridColumnPinningState;
   detailPanel: GridDetailPanelState;
   dataSource: GridDataSourceState;
@@ -26,5 +28,6 @@ export interface GridStatePro extends GridStateCommunity {
  */
 export interface GridInitialStatePro extends GridInitialStateCommunity {
   pinnedColumns?: GridPinnedColumnFields;
+  collapsedColumns?: GridColumnCollapseState;
   detailPanel?: GridDetailPanelInitialState;
 }

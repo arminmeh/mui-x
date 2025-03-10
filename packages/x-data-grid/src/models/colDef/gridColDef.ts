@@ -113,6 +113,11 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
    */
   maxWidth?: number;
   /**
+   * If `false`, disables collapsing of this column.
+   * @default true
+   */
+  collapsible?: boolean;
+  /**
    * If `false`, removes the option to hide this column.
    * @default true
    */
@@ -241,6 +246,11 @@ export interface GridBaseColDef<R extends GridValidRowModel = GridValidRowModel,
    * Align column header content.
    */
   headerAlign?: GridAlignment;
+  /**
+   * Toggle the visibility of the collapse icon.
+   * @default true
+   */
+  hideCollapseIcon?: boolean;
   /**
    * Toggle the visibility of the sort icons.
    * @default false

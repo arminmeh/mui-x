@@ -8,6 +8,7 @@ import { useGridPrivateApiContext } from '../../utils/useGridPrivateApiContext';
 import type { GridColumnsRenderContext } from '../../../models/params/gridScrollParams';
 import { useGridApiEventHandler } from '../../utils/useGridApiEventHandler';
 import { GridEventListener } from '../../../models/events';
+import { GridSortDirection } from '../../../models/gridSortModel';
 import { GridColumnHeaderItem } from '../../../components/columnHeaders/GridColumnHeaderItem';
 import {
   gridColumnsTotalWidthSelector,
@@ -66,6 +67,7 @@ export interface UseGridColumnHeadersProps {
   columnVisibility: GridColumnVisibilityModel;
   columnGroupsHeaderStructure: GridGroupingStructure[][];
   hasOtherElementInTabSequence: boolean;
+  renderAdditionalColumnTitleIconButtons?: (colDef: GridStateColDef) => React.ReactNode;
 }
 
 export interface GetHeadersParams {
@@ -98,6 +100,7 @@ export const useGridColumnHeaders = (props: UseGridColumnHeadersProps) => {
     columnVisibility,
     columnGroupsHeaderStructure,
     hasOtherElementInTabSequence,
+    renderAdditionalColumnTitleIconButtons,
   } = props;
 
   const [dragCol, setDragCol] = React.useState('');
@@ -263,14 +266,52 @@ export const useGridColumnHeaders = (props: UseGridColumnHeadersProps) => {
         gridHasFiller,
       );
 
+      const filterItemsCounter =
+        filterColumnLookup[colDef.field] && filterColumnLookup[colDef.field].length;
+      const sortingOrder: readonly GridSortDirection[] =
+        colDef.sortingOrder ?? rootProps.sortingOrder;
+      const sortDirection = sortColumnLookup[colDef.field]?.sortDirection;
+      const sortIndex = sortColumnLookup[colDef.field]?.sortIndex;
+      const showSortIcon =
+        (colDef.sortable || sortDirection != null) &&
+        !colDef.hideSortIcons &&
+        !rootProps.disableColumnSorting;
+
+      const additionalColumnTitleIconButtons = renderAdditionalColumnTitleIconButtons
+        ? renderAdditionalColumnTitleIconButtons(colDef)
+        : null;
+
+      const columnTitleIconButtons = (
+        <React.Fragment>
+          {!rootProps.disableColumnFilter && (
+            <rootProps.slots.columnHeaderFilterIconButton
+              field={colDef.field}
+              counter={filterItemsCounter}
+              {...rootProps.slotProps?.columnHeaderFilterIconButton}
+            />
+          )}
+
+          {showSortIcon && (
+            <rootProps.slots.columnHeaderSortIcon
+              field={colDef.field}
+              direction={sortDirection}
+              index={sortIndex}
+              sortingOrder={sortingOrder}
+              disabled={!colDef.sortable}
+              {...rootProps.slotProps?.columnHeaderSortIcon}
+            />
+          )}
+
+          {additionalColumnTitleIconButtons}
+        </React.Fragment>
+      );
+
       columns.push(
         <GridColumnHeaderItem
           key={colDef.field}
           {...sortColumnLookup[colDef.field]}
           columnMenuOpen={open}
-          filterItemsCounter={
-            filterColumnLookup[colDef.field] && filterColumnLookup[colDef.field].length
-          }
+          filterItemsCounter={filterItemsCounter}
           headerHeight={headerHeight}
           isDragging={colDef.field === dragCol}
           colDef={colDef}
@@ -285,6 +326,7 @@ export const useGridColumnHeaders = (props: UseGridColumnHeadersProps) => {
           isSiblingFocused={isSiblingFocused}
           showLeftBorder={showLeftBorder}
           showRightBorder={showRightBorder}
+          columnTitleIconButtons={columnTitleIconButtons}
           {...other}
         />,
       );

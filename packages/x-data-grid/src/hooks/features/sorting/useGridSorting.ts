@@ -302,6 +302,7 @@ export const useGridSorting = (
 
   /**
    * EVENTS
+   * // TODO: can be replaced with collapse
    */
   const handleColumnHeaderClick = React.useCallback<GridEventListener<'columnHeaderClick'>>(
     ({ field, colDef }, event) => {

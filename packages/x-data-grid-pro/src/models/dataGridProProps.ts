@@ -23,6 +23,7 @@ import type {
   DataGridProSharedPropsWithoutDefaultValue,
 } from '@mui/x-data-grid/internals';
 import type { GridPinnedRowsProp } from '../hooks/features/rowPinning';
+import { GridColumnCollapseModel } from '../hooks/features/columnCollapse';
 import { GridApiPro } from './gridApiPro';
 import {
   GridGroupingColDefOverride,
@@ -109,6 +110,11 @@ export interface DataGridProPropsWithDefaultValue<R extends GridValidRowModel = 
    * @default false
    */
   disableColumnPinning: boolean;
+  /**
+   * If `true`, the column collapsing is disabled.
+   * @default false
+   */
+  disableColumnCollapse: boolean;
   /**
    * If `true`, the filtering will only be applied to the top level rows when grouping rows with the `treeData` prop.
    * @default false
@@ -216,6 +222,19 @@ export interface DataGridProPropsWithoutDefaultValue<R extends GridValidRowModel
    */
   onPinnedColumnsChange?: (
     pinnedColumns: GridPinnedColumnFields,
+    details: GridCallbackDetails,
+  ) => void;
+  /**
+   * The columns to display collapsed.
+   */
+  collapsedColumns?: GridColumnCollapseModel;
+  /**
+   * Callback fired when the collapsed columns have changed.
+   * @param {GridColumnCollapseModel} collapsedColumns The changed collapsed columns.
+   * @param {GridCallbackDetails} details Additional details for this callback.
+   */
+  onCollapsedColumnsChange?: (
+    collapsedColumns: GridColumnCollapseModel,
     details: GridCallbackDetails,
   ) => void;
   /**

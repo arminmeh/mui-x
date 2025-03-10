@@ -7,6 +7,7 @@ import type {
 import type { GridRenderHeaderFilterProps } from '../components/headerFiltering/GridHeaderFilterCell';
 import type { GridColumnPinningInternalCache } from '../hooks/features/columnPinning/gridColumnPinningInterface';
 import type { GridCanBeReorderedPreProcessingContext } from '../hooks/features/columnReorder/columnReorderInterfaces';
+import type { GridColumnCollapseModel } from '../hooks/features/columnCollapse/gridColumnCollapseInterface';
 import { GridRowPinningInternalCache } from '../hooks/features/rowPinning/gridRowPinningInterface';
 
 export interface GridColDefPro {
@@ -25,10 +26,15 @@ export interface GridControlledStateEventLookupPro {
    */
   detailPanelsExpandedRowIdsChange: { params: Set<GridRowId> };
   /**
-   * Fired when the pinned columns is changed.
+   * Fired when the pinned columns state is changed.
    * @ignore - do not document.
    */
   pinnedColumnsChange: { params: GridPinnedColumnFields };
+  /**
+   * Fired when the collapsed columns state is changed.
+   * @ignore - do not document.
+   */
+  collapsedColumnsChange: { params: GridColumnCollapseModel };
 }
 
 export interface GridEventLookupPro {
