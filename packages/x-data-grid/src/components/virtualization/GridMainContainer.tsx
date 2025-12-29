@@ -51,7 +51,7 @@ export const GridMainContainer = forwardRef<
   }>
 >((props, ref) => {
   const { ownerState } = props;
-  const rootProps = useGridRootProps();
+  const { slotProps } = useGridRootProps();
   const configuration = useGridConfiguration();
   const ariaAttributes = configuration.hooks.useGridAriaAttributes();
 
@@ -61,7 +61,7 @@ export const GridMainContainer = forwardRef<
       className={props.className}
       tabIndex={-1}
       {...ariaAttributes}
-      {...rootProps.slotProps?.main}
+      {...slotProps?.main}
       ref={ref}
     >
       <GridPanelAnchor role="presentation" data-id="gridPanelAnchor" />
