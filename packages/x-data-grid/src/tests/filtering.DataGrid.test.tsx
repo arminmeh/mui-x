@@ -1520,6 +1520,116 @@ describe('<DataGrid /> - Filter', () => {
     });
   });
 
+  describe('column type: multipleSelect', () => {
+    const getRows = (item: GridFilterItem) => {
+      const { unmount } = render(
+        <TestCase
+          filterModel={{
+            items: [item],
+          }}
+          rows={[
+            { id: 0, tags: ['frontend', 'urgent'] },
+            { id: 1, tags: ['backend', 'urgent'] },
+            { id: 2, tags: ['frontend', 'backend'] },
+            { id: 3, tags: [] },
+            { id: 4, tags: null },
+          ]}
+          columns={[
+            {
+              field: 'tags',
+              type: 'multipleSelect',
+              valueOptions: ['frontend', 'backend', 'urgent', 'low'],
+            },
+          ]}
+        />,
+      );
+      const values = getColumnValues(0);
+      unmount();
+      return values;
+    };
+
+    // Values are rendered as chips, so textContent concatenates labels without separators
+    const ALL_ROWS = ['frontendurgent', 'backendurgent', 'frontendbackend', '', ''];
+
+    it('should filter with operator "contains"', () => {
+      expect(getRows({ field: 'tags', operator: 'contains', value: 'frontend' })).to.deep.equal([
+        'frontendurgent',
+        'frontendbackend',
+      ]);
+      expect(getRows({ field: 'tags', operator: 'contains', value: 'urgent' })).to.deep.equal([
+        'frontendurgent',
+        'backendurgent',
+      ]);
+      expect(getRows({ field: 'tags', operator: 'contains', value: '' })).to.deep.equal(ALL_ROWS);
+      expect(getRows({ field: 'tags', operator: 'contains', value: null })).to.deep.equal(ALL_ROWS);
+    });
+
+    it('should filter with operator "notContains"', () => {
+      expect(getRows({ field: 'tags', operator: 'notContains', value: 'frontend' })).to.deep.equal([
+        'backendurgent',
+        '',
+        '',
+      ]);
+      expect(getRows({ field: 'tags', operator: 'notContains', value: 'urgent' })).to.deep.equal([
+        'frontendbackend',
+        '',
+        '',
+      ]);
+      expect(getRows({ field: 'tags', operator: 'notContains', value: '' })).to.deep.equal(
+        ALL_ROWS,
+      );
+      expect(getRows({ field: 'tags', operator: 'notContains', value: null })).to.deep.equal(
+        ALL_ROWS,
+      );
+    });
+
+    it('should filter with operator "containsAny"', () => {
+      expect(
+        getRows({ field: 'tags', operator: 'containsAny', value: ['frontend'] }),
+      ).to.deep.equal(['frontendurgent', 'frontendbackend']);
+      expect(
+        getRows({ field: 'tags', operator: 'containsAny', value: ['frontend', 'backend'] }),
+      ).to.deep.equal(['frontendurgent', 'backendurgent', 'frontendbackend']);
+      expect(getRows({ field: 'tags', operator: 'containsAny', value: [] })).to.deep.equal(
+        ALL_ROWS,
+      );
+      expect(getRows({ field: 'tags', operator: 'containsAny', value: undefined })).to.deep.equal(
+        ALL_ROWS,
+      );
+    });
+
+    it('should filter with operator "containsAll"', () => {
+      expect(
+        getRows({ field: 'tags', operator: 'containsAll', value: ['frontend', 'urgent'] }),
+      ).to.deep.equal(['frontendurgent']);
+      expect(
+        getRows({ field: 'tags', operator: 'containsAll', value: ['frontend', 'backend'] }),
+      ).to.deep.equal(['frontendbackend']);
+      expect(getRows({ field: 'tags', operator: 'containsAll', value: ['urgent'] })).to.deep.equal([
+        'frontendurgent',
+        'backendurgent',
+      ]);
+      expect(getRows({ field: 'tags', operator: 'containsAll', value: [] })).to.deep.equal(
+        ALL_ROWS,
+      );
+      expect(getRows({ field: 'tags', operator: 'containsAll', value: undefined })).to.deep.equal(
+        ALL_ROWS,
+      );
+    });
+
+    it('should filter with operator "isEmpty"', () => {
+      expect(getRows({ field: 'tags', operator: 'isEmpty' })).to.deep.equal(['', '']);
+    });
+
+    it('should filter with operator "isNotEmpty"', () => {
+      expect(getRows({ field: 'tags', operator: 'isNotEmpty' })).to.deep.equal([
+        'frontendurgent',
+        'backendurgent',
+        'frontendbackend',
+      ]);
+    });
+  });
+
   describe('custom `filterOperators`', () => {
     it('should allow to customize filter tooltip using `filterOperator.getValueAsString`', async () => {
       const { user } = render(

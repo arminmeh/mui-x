@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import useId from '@mui/utils/useId';
 import { TextFieldProps } from '../../../models/gridBaseSlots';
 import { GridFilterInputValueProps } from '../../../models/gridFilterInputComponent';
-import { GridSingleSelectColDef } from '../../../models/colDef/gridColDef';
+import { GridSingleSelectColDef, GridMultipleSelectColDef } from '../../../models/colDef/gridColDef';
 import { useGridRootProps } from '../../../hooks/utils/useGridRootProps';
 import {
   getValueFromValueOptions,
   getValueOptions,
   isSingleSelectColDef,
+  isMultipleSelectColDef,
 } from './filterPanelUtils';
 import type { GridSlotsComponentsProps } from '../../../models/gridSlotsComponentsProps';
+
+type SelectColDef = GridSingleSelectColDef | GridMultipleSelectColDef;
 
 const renderSingleSelectOptions = ({
   column,
@@ -20,10 +23,10 @@ const renderSingleSelectOptions = ({
   isSelectNative,
   baseSelectOptionProps,
 }: {
-  column: GridSingleSelectColDef;
+  column: SelectColDef;
   OptionComponent: React.ElementType;
-  getOptionLabel: NonNullable<GridSingleSelectColDef['getOptionLabel']>;
-  getOptionValue: NonNullable<GridSingleSelectColDef['getOptionValue']>;
+  getOptionLabel: NonNullable<SelectColDef['getOptionLabel']>;
+  getOptionValue: NonNullable<SelectColDef['getOptionValue']>;
   isSelectNative: boolean;
   baseSelectOptionProps: GridSlotsComponentsProps['baseSelectOption'];
 }) => {
@@ -45,7 +48,7 @@ const renderSingleSelectOptions = ({
 };
 
 export type GridFilterInputSingleSelectProps = GridFilterInputValueProps<TextFieldProps> & {
-  type?: 'singleSelect';
+  type?: 'singleSelect' | 'multipleSelect';
 };
 
 function GridFilterInputSingleSelect(props: GridFilterInputSingleSelectProps) {
@@ -69,17 +72,26 @@ function GridFilterInputSingleSelect(props: GridFilterInputSingleSelectProps) {
 
   const isSelectNative = rootProps.slotProps?.baseSelect?.native ?? false;
 
-  const resolvedColumn = apiRef.current.getColumn(item.field) as GridSingleSelectColDef | undefined;
+  const resolvedColumn = apiRef.current.getColumn(item.field) as SelectColDef | undefined;
 
-  const getOptionValue = resolvedColumn!.getOptionValue;
-  const getOptionLabel = resolvedColumn!.getOptionLabel;
+  const isSelectColDef =
+    resolvedColumn &&
+    (isSingleSelectColDef(resolvedColumn) || isMultipleSelectColDef(resolvedColumn));
+
+  const getOptionValue = resolvedColumn?.getOptionValue;
 
   const currentValueOptions = React.useMemo(() => {
-    return getValueOptions(resolvedColumn!);
-  }, [resolvedColumn]);
+    if (!resolvedColumn || !isSelectColDef) {
+      return undefined;
+    }
+    return getValueOptions(resolvedColumn);
+  }, [resolvedColumn, isSelectColDef]);
 
   const onFilterChange = React.useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
+      if (!getOptionValue) {
+        return;
+      }
       let value = event.target.value;
 
       // NativeSelect casts the value to a string.
@@ -89,7 +101,7 @@ function GridFilterInputSingleSelect(props: GridFilterInputSingleSelectProps) {
     [currentValueOptions, getOptionValue, applyValue, item],
   );
 
-  if (!resolvedColumn || !isSingleSelectColDef(resolvedColumn)) {
+  if (!resolvedColumn || !isSelectColDef) {
     return null;
   }
 
@@ -123,8 +135,8 @@ function GridFilterInputSingleSelect(props: GridFilterInputSingleSelectProps) {
         {renderSingleSelectOptions({
           column: resolvedColumn,
           OptionComponent: rootProps.slots.baseSelectOption,
-          getOptionLabel,
-          getOptionValue,
+          getOptionLabel: resolvedColumn.getOptionLabel,
+          getOptionValue: resolvedColumn.getOptionValue,
           isSelectNative,
           baseSelectOptionProps: rootProps.slotProps?.baseSelectOption,
         })}
@@ -181,7 +193,7 @@ GridFilterInputSingleSelect.propTypes = {
   onFocus: PropTypes.func,
   slotProps: PropTypes.object,
   tabIndex: PropTypes.number,
-  type: PropTypes.oneOf(['singleSelect']),
+  type: PropTypes.oneOf(['singleSelect', 'multipleSelect']),
 } as any;
 
 export { GridFilterInputSingleSelect };

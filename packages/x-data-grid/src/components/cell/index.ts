@@ -5,6 +5,8 @@ export * from './GridEditBooleanCell';
 export * from './GridEditDateCell';
 export * from './GridEditInputCell';
 export * from './GridEditSingleSelectCell';
+export * from './GridEditMultipleSelectCell';
+export * from './GridMultipleSelectCell';
 export * from './GridActionsCell';
 export * from './GridActionsCellItem';
 export * from './GridSkeletonCell';

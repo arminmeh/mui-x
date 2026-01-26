@@ -5,6 +5,7 @@ export interface GridColumnTypes {
   dateTime: 'dateTime';
   boolean: 'boolean';
   singleSelect: 'singleSelect';
+  multipleSelect: 'multipleSelect';
   actions: 'actions';
   custom: 'custom';
 }

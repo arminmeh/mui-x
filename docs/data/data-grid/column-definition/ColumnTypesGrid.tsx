@@ -22,6 +22,7 @@ const initialRows = [
     isAdmin: true,
     country: 'Spain',
     discount: '',
+    tags: ['frontend', 'senior'],
   },
   {
     id: 2,
@@ -32,6 +33,7 @@ const initialRows = [
     isAdmin: false,
     country: 'France',
     discount: '',
+    tags: ['backend', 'senior'],
   },
   {
     id: 3,
@@ -42,6 +44,7 @@ const initialRows = [
     isAdmin: false,
     country: 'Brazil',
     discount: 'junior',
+    tags: ['frontend'],
   },
 ];
 
@@ -123,6 +126,13 @@ const columns: GridColDef<Row>[] = [
       }
       return options;
     },
+  },
+  {
+    field: 'tags',
+    type: 'multipleSelect',
+    width: 150,
+    editable: true,
+    valueOptions: ['frontend', 'backend', 'senior', 'junior'],
   },
   {
     field: 'actions',

@@ -4,13 +4,19 @@ import useId from '@mui/utils/useId';
 import { AutocompleteProps } from '../../../models/gridBaseSlots';
 import { useGridRootProps } from '../../../hooks/utils/useGridRootProps';
 import { GridFilterInputValueProps } from '../../../models/gridFilterInputComponent';
-import type { GridSingleSelectColDef, ValueOptions } from '../../../models/colDef/gridColDef';
-import { getValueOptions, isSingleSelectColDef } from './filterPanelUtils';
+import type {
+  GridSingleSelectColDef,
+  GridMultipleSelectColDef,
+  ValueOptions,
+} from '../../../models/colDef/gridColDef';
+import { getValueOptions, isSingleSelectColDef, isMultipleSelectColDef } from './filterPanelUtils';
+
+type SelectColDef = GridSingleSelectColDef | GridMultipleSelectColDef;
 
 export type GridFilterInputMultipleSingleSelectProps = GridFilterInputValueProps<
   Omit<AutocompleteProps<ValueOptions, true, false, true>, 'options'>
 > & {
-  type?: 'singleSelect';
+  type?: 'singleSelect' | 'multipleSelect';
 };
 
 function GridFilterInputMultipleSingleSelect(props: GridFilterInputMultipleSingleSelectProps) {
@@ -19,10 +25,21 @@ function GridFilterInputMultipleSingleSelect(props: GridFilterInputMultipleSingl
   const id = useId();
   const rootProps = useGridRootProps();
 
-  const resolvedColumn = apiRef.current.getColumn(item.field) as GridSingleSelectColDef | undefined;
+  const resolvedColumn = apiRef.current.getColumn(item.field) as SelectColDef | undefined;
 
-  const getOptionValue = resolvedColumn!.getOptionValue;
-  const getOptionLabel = resolvedColumn!.getOptionLabel;
+  const isSelectColDef =
+    resolvedColumn &&
+    (isSingleSelectColDef(resolvedColumn) || isMultipleSelectColDef(resolvedColumn));
+
+  const getOptionValue = React.useMemo(
+    () => resolvedColumn?.getOptionValue ?? (() => undefined as any),
+    [resolvedColumn],
+  );
+
+  const getOptionLabel = React.useMemo(
+    () => resolvedColumn?.getOptionLabel ?? (() => ''),
+    [resolvedColumn],
+  );
 
   const isOptionEqualToValue = React.useCallback(
     (option: ValueOptions, value: ValueOptions) => getOptionValue(option) === getOptionValue(value),
@@ -30,8 +47,11 @@ function GridFilterInputMultipleSingleSelect(props: GridFilterInputMultipleSingl
   );
 
   const resolvedValueOptions = React.useMemo(() => {
-    return getValueOptions(resolvedColumn!) || [];
-  }, [resolvedColumn]);
+    if (!resolvedColumn || !isSelectColDef) {
+      return [];
+    }
+    return getValueOptions(resolvedColumn) || [];
+  }, [resolvedColumn, isSelectColDef]);
 
   // The value is computed from the item.value and used directly
   // If it was done by a useEffect/useState, the Autocomplete could receive incoherent value and options
@@ -58,7 +78,7 @@ function GridFilterInputMultipleSingleSelect(props: GridFilterInputMultipleSingl
     [applyValue, item, getOptionValue],
   );
 
-  if (!resolvedColumn || !isSingleSelectColDef(resolvedColumn)) {
+  if (!resolvedColumn || !isSelectColDef) {
     return null;
   }
 
@@ -135,7 +155,7 @@ GridFilterInputMultipleSingleSelect.propTypes = {
   onFocus: PropTypes.func,
   slotProps: PropTypes.object,
   tabIndex: PropTypes.number,
-  type: PropTypes.oneOf(['singleSelect']),
+  type: PropTypes.oneOf(['singleSelect', 'multipleSelect']),
 } as any;
 
 export { GridFilterInputMultipleSingleSelect };

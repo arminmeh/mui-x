@@ -363,6 +363,41 @@ export interface GridSingleSelectColDef<
 }
 
 /**
+ * Column Definition interface used for columns with the `multipleSelect` type.
+ * @demos
+ *   - [Special column properties](/x/react-data-grid/column-definition/#special-properties)
+ */
+export interface GridMultipleSelectColDef<
+  R extends GridValidRowModel = any,
+  V = any[],
+  F = any,
+> extends GridBaseColDef<R, V, F> {
+  /**
+   * The type of the column.
+   * @default 'multipleSelect'
+   */
+  type: 'multipleSelect';
+  /**
+   * To be used in combination with `type: 'multipleSelect'`. This is an array (or a function returning an array) of the possible cell values and labels.
+   */
+  valueOptions?: Array<ValueOptions> | ((params: GridValueOptionsParams<R>) => Array<ValueOptions>);
+  /**
+   * Used to determine the label displayed for a given value option.
+   * @param {ValueOptions} value The current value option.
+   * @returns {string} The text to be displayed.
+   * @default {defaultGetOptionLabel}
+   */
+  getOptionLabel: (value: ValueOptions) => string;
+  /**
+   * Used to determine the value used for a value option.
+   * @param {ValueOptions} value The current value option.
+   * @returns {string} The value to be used.
+   * @default {defaultGetOptionValue}
+   */
+  getOptionValue: (value: ValueOptions) => any;
+}
+
+/**
  * Column Definition interface.
  * @demos
  *   - [Column definition](/x/react-data-grid/column-definition/)
@@ -370,7 +405,8 @@ export interface GridSingleSelectColDef<
 export type GridColDef<R extends GridValidRowModel = any, V = any, F = V> =
   | GridBaseColDef<R, V, F>
   | GridActionsColDef<R, V, F>
-  | GridSingleSelectColDef<R, V, F>;
+  | GridSingleSelectColDef<R, V, F>
+  | GridMultipleSelectColDef<R, V, F>;
 
 /**
  * Column Definition interface used for the list view column.

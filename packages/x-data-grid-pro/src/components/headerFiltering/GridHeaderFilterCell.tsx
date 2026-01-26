@@ -139,6 +139,7 @@ const DEFAULT_INPUT_COMPONENTS: {
   dateTime: GridFilterInputDate,
   boolean: GridFilterInputBoolean,
   singleSelect: GridFilterInputSingleSelect,
+  multipleSelect: GridFilterInputSingleSelect,
   actions: null,
   custom: null,
 };

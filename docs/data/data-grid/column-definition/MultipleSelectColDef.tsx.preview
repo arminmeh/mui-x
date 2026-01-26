@@ -1,0 +1,11 @@
+<DataGrid
+  rows={rows}
+  columns={columns}
+  initialState={{
+    filter: {
+      filterModel: {
+        items: [],
+      },
+    },
+  }}
+/>

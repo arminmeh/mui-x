@@ -1,12 +1,22 @@
-import type { GridColDef, GridSingleSelectColDef } from '../../../models/colDef/gridColDef';
+import type {
+  GridColDef,
+  GridSingleSelectColDef,
+  GridMultipleSelectColDef,
+} from '../../../models/colDef/gridColDef';
 import type { GridValueOptionsParams } from '../../../models/params/gridValueOptionsParams';
 
 export function isSingleSelectColDef(colDef: GridColDef | null): colDef is GridSingleSelectColDef {
   return colDef?.type === 'singleSelect';
 }
 
+export function isMultipleSelectColDef(
+  colDef: GridColDef | null,
+): colDef is GridMultipleSelectColDef {
+  return colDef?.type === 'multipleSelect';
+}
+
 export function getValueOptions(
-  column: GridSingleSelectColDef,
+  column: GridSingleSelectColDef | GridMultipleSelectColDef,
   additionalParams?: Omit<GridValueOptionsParams, 'field'>,
 ) {
   if (!column) {

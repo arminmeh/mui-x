@@ -321,6 +321,44 @@ However, you can customize which attribute is used as value and label by using `
 
 :::
 
+#### Multiple select
+
+If the column type is `'multipleSelect'`, you also need to set the `valueOptions` property in the respective column definition. This column type is used when cells can contain multiple values from a predefined set of options. The values are displayed as chips and can be edited using a multi-select autocomplete.
+
+```tsx
+{
+  field: 'tags',
+  type: 'multipleSelect',
+  valueOptions: ['frontend', 'backend', 'urgent', 'low']
+}
+```
+
+The cell value should be an array of values:
+
+```tsx
+const rows = [
+  { id: 1, tags: ['frontend', 'urgent'] },
+  { id: 2, tags: ['backend'] },
+  { id: 3, tags: [] },
+];
+```
+
+The `multipleSelect` column type provides specialized filter operators:
+
+- `contains` - rows where the array contains the filter value
+- `notContains` - rows where the array does not contain the filter value
+- `containsAny` - rows where the array contains any of the filter values (OR logic)
+- `containsAll` - rows where the array contains all of the filter values (AND logic)
+- `isEmpty` - rows where the array is empty
+- `isNotEmpty` - rows where the array is not empty
+
+:::warning
+When using objects values for `valueOptions`, you need to provide the `value` and `label` attributes for each option, similar to `singleSelect`.
+You can customize which attribute is used as value and label by using `getOptionValue` and `getOptionLabel`, respectively.
+:::
+
+{{"demo": "MultipleSelectColDef.js", "bg": "inline"}}
+
 #### Actions
 
 If the column type is `'actions'`, you need to provide a `renderCell` function that renders a `GridActionsCell` component with `GridActionsCellItem` elements as children.
